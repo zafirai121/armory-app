@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The page background in src/style.css (dark theme) -->
+    <color name="app_bg">#0f1311</color>
+    <color name="ic_launcher_background">#1d2520</color>
+</resources>

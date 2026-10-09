@@ -12,6 +12,7 @@ import * as V from './views.js';
 import * as R from './reports.js';
 import { initLock, lockNow, setLockForm, removeLockForm } from './lock.js';
 import { loadDemo } from './demo.js';
+import { isAndroidApp } from './native.js';
 
 const store = createStore();
 F.initForms(store);
@@ -136,9 +137,17 @@ const actions = {
     const range = from || to ? `من ${from ? day(from) : 'البداية'} إلى ${to ? day(to) : 'اليوم'}` : 'كل الحركات';
     R.printLog(V.filteredLog(), range);
   },
-  'export-csv': (d) => R.exportCsv(d.what, d.what === 'log' && route().section === 'log' ? V.filteredLog() : undefined),
+  'export-csv': async (d) => {
+    const status = await R.exportCsv(d.what, d.what === 'log' && route().section === 'log' ? V.filteredLog() : undefined);
+    if (status === 'failed') toast('تعذّر حفظ الملف', 'error');
+    else if (status === 'saved' && isAndroidApp) toast('حُفظ الملف');
+  },
 
-  backup: () => { R.downloadBackup(); toast('نُزّلت النسخة الاحتياطية، احفظها في مكان آمن'); },
+  backup: async () => {
+    const status = await R.downloadBackup();
+    if (status === 'failed') toast('تعذّر حفظ النسخة الاحتياطية', 'error');
+    else if (status === 'saved') toast(isAndroidApp ? 'حُفظت النسخة الاحتياطية' : 'نُزّلت النسخة الاحتياطية، احفظها في مكان آمن');
+  },
   restore: restoreBackup,
   reset: resetAll,
   demo: () => { loadDemo(store); toast('حُمّلت بيانات نموذجية للتجربة'); },
@@ -214,6 +223,7 @@ store.subscribe(() => render({ sameView: true }));
 render();
 
 navigator.storage?.persist?.().catch(() => {});
-if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+// The Android app has its files on the phone already; only the website needs a service worker
+if (import.meta.env.PROD && !isAndroidApp && 'serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 }

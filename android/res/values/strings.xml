@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">مستودع السرية</string>
+    <string name="pick_file">اختر ملف النسخة الاحتياطية</string>
+    <string name="no_app">لا يوجد تطبيق على الهاتف يمكنه فتح هذا الرابط</string>
+</resources>

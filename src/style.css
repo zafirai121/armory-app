@@ -366,6 +366,7 @@ a.item:hover { background: var(--surface-2); }
 .settings-form { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
 .settings-form .field, .settings-form .field-row { width: 100%; }
 .backup-state { font-size: 14px; margin-bottom: 12px; }
+.app-version { text-align: center; color: var(--muted); font-size: 12.5px; padding: 4px 0 8px; }
 .danger-zone { border-color: color-mix(in srgb, var(--danger) 35%, var(--border)); }
 .danger-zone .card-title .ic { color: var(--danger); }
 

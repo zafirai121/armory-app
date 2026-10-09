@@ -4,7 +4,7 @@ import {
   House, Crosshair, Boxes, Users, ScrollText, Settings, Plus, Search, X, ArrowRight, ChevronLeft,
   Pencil, Trash2, ArrowUpFromLine, ArrowDownToLine, Wrench, TriangleAlert, Printer, FileSpreadsheet,
   HardDriveDownload, HardDriveUpload, Lock, LockOpen, ShieldCheck, Flame, Scale, PackagePlus, Send,
-  User, Info, Eraser, KeyRound, Database, SearchX, Inbox, CircleCheck,
+  User, Info, Eraser, KeyRound, Database, SearchX, Inbox, CircleCheck, Smartphone, Download,
 } from 'lucide';
 
 const ICONS = {
@@ -14,7 +14,7 @@ const ICONS = {
   print: Printer, sheet: FileSpreadsheet, backup: HardDriveDownload, restore: HardDriveUpload,
   lock: Lock, unlock: LockOpen, shield: ShieldCheck, flame: Flame, scale: Scale, receive: PackagePlus,
   send: Send, user: User, info: Info, erase: Eraser, key: KeyRound, data: Database, 'no-results': SearchX,
-  empty: Inbox, check: CircleCheck,
+  empty: Inbox, check: CircleCheck, phone: Smartphone, download: Download,
 };
 
 const attr = (v) => String(v).replace(/&/g, '&amp;').replace(/"/g, '&quot;');

@@ -3,6 +3,9 @@
 // the print stylesheet shows.
 import { WEAPON_STATUS, LOG_KINDS, personLabel } from './store.js';
 import { esc, fmtNum, fmtDate, fmtDateTime, download, isolateLtr } from './ui.js';
+import * as native from './native.js';
+
+const { isAndroidApp } = native;
 import { describe } from './views.js';
 
 let store;
@@ -33,10 +36,13 @@ const table = (head, rows, empty = 'لا يوجد') => `<table class="p-table">
     : `<tr><td colspan="${head.length + 1}" class="p-empty">${empty}</td></tr>`}</tbody>
 </table>`;
 
-function print(html) {
+function print(html, title) {
   const area = document.getElementById('print-area');
   area.innerHTML = html;
   isolateLtr(area);
+  // Android prints the page after its print screen opens, so the report stays
+  // in place there (hidden on screen) until the next one replaces it
+  if (isAndroidApp) { native.print(`${title} - ${unitTitle()}`); return; }
   window.addEventListener('afterprint', () => { area.innerHTML = ''; }, { once: true });
   window.print();
 }
@@ -67,7 +73,7 @@ export function printInventory() {
         const b = store.balanceOf(a.id);
         return [esc(a.name), esc(a.caliber), esc(a.lot), esc(a.unit), fmtNum(b.store), fmtNum(b.issued), `<b>${fmtNum(b.store + b.issued)}</b>`];
       }))}
-    ${signatures([['أمين المستودع'], ['آمر السرية']])}`);
+    ${signatures([['أمين المستودع'], ['آمر السرية']])}`, 'تقرير الجرد العام');
 }
 
 export function printCustody(personId) {
@@ -88,7 +94,7 @@ export function printCustody(personId) {
     ${table(['الصنف', 'العيار', 'الوجبة', 'الكمية', 'الوحدة'],
       c.ammo.map(({ ammo: a, qty }) => [esc(a.name), esc(a.caliber), esc(a.lot), `<b>${fmtNum(qty)}</b>`, esc(a.unit)]), 'لا يوجد عتاد بذمته')}
     <p class="p-pledge">أتعهد بالمحافظة على المواد المثبتة أعلاه واستخدامها للأغراض الرسمية فقط وإعادتها عند الطلب، وأتحمل المسؤولية في حال فقدانها أو إتلافها.</p>
-    ${signatures([['المستلم', personLabel(p)], ['أمين المستودع'], ['آمر السرية']])}`);
+    ${signatures([['المستلم', personLabel(p)], ['أمين المستودع'], ['آمر السرية']])}`, `سند ذمة ${p.name}`);
 }
 
 export function printLog(entries, rangeText) {
@@ -99,7 +105,7 @@ export function printLog(entries, rangeText) {
         const d = describe(e);
         return [fmtDateTime(e.at), LOG_KINDS[e.kind].label, esc(d.what) + (d.amount ? ` — <b>${esc(d.amount)}</b>` : ''), esc(e.p || ''), esc(e.note || '')];
       }))}
-    ${signatures([['أمين المستودع'], ['آمر السرية']])}`);
+    ${signatures([['أمين المستودع'], ['آمر السرية']])}`, 'سجل الحركات');
 }
 
 // ── Spreadsheet (CSV, opens in Excel with Arabic intact) ──
@@ -131,10 +137,12 @@ export function exportCsv(what, entries) {
         e.w || '', e.a || '', e.qty ?? '', e.p || '', e.note || ''])]],
   };
   const [name, rows] = sheets[what];
-  download(`armory-${name}-${stamp()}.csv`, csv(rows), 'text/csv;charset=utf-8');
+  return download(`armory-${name}-${stamp()}.csv`, csv(rows), 'text/csv;charset=utf-8');
 }
 
-export function downloadBackup() {
-  download(`armory-backup-${stamp()}.json`, store.exportJSON(), 'application/json');
-  store.markBackedUp();
+// Resolves to 'saved', 'cancelled' or 'failed'; only a saved file counts as a backup
+export async function downloadBackup() {
+  const status = await download(`armory-backup-${stamp()}.json`, store.exportJSON(), 'application/json');
+  if (status === 'saved') store.markBackedUp();
+  return status;
 }

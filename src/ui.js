@@ -2,6 +2,7 @@
 // bottom sheet that holds every form, form fields, toasts and downloads.
 import { icon } from './icons.js';
 import { UserError, toLatinDigits } from './store.js';
+import { isAndroidApp, saveFile } from './native.js';
 
 export const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => (
   { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
@@ -196,13 +197,18 @@ function wirePickers(root) {
 }
 
 // ── Files ──
-export function download(filename, content, type) {
-  const url = URL.createObjectURL(content instanceof Blob ? content : new Blob([content], { type }));
+// Saves a text file. In the Android app the system's "save to" picker opens
+// and this resolves to 'saved', 'cancelled' or 'failed'; in a browser the
+// file is downloaded and this resolves to 'saved'.
+export async function download(filename, text, type) {
+  if (isAndroidApp) return saveFile(filename, type, text);
+  const url = URL.createObjectURL(new Blob([text], { type }));
   const a = Object.assign(document.createElement('a'), { href: url, download: filename });
   document.body.append(a);
   a.click();
   a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
+  return 'saved';
 }
 
 export function pickFile(accept) {

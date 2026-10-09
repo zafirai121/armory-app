@@ -4,6 +4,8 @@
 import { WEAPON_STATUS, LOG_KINDS, personLabel } from './store.js';
 import { icon } from './icons.js';
 import { esc, fmtNum, fmtDate, fmtTime, fmtDateTime, dayKey, matches } from './ui.js';
+import { isAndroidApp } from './native.js';
+import { version } from '../package.json';
 
 let store;
 export const initViews = (s) => { store = s; };
@@ -545,11 +547,18 @@ export function settingsView() {
         </div>
       </section>
 
+      ${isAndroidApp ? '' : `<section class="card">
+        <h2 class="card-title">${icon('phone')} تطبيق أندرويد</h2>
+        <p class="card-sub">نسخة تُثبَّت على هواتف أندرويد كتطبيق مستقل، وتحفظ السجلات داخل التطبيق وتعمل بدون إنترنت. حمّل الملف ثم افتحه للتثبيت.</p>
+        <div class="actions"><a class="btn primary" href="armory.apk" download="armory.apk">${icon('download')}<span>تحميل التطبيق (APK)</span></a></div>
+      </section>`}
+
       <section class="card danger-zone">
         <h2 class="card-title">${icon('erase')} مسح البيانات</h2>
         <p class="card-sub">يحذف كل السجلات من هذا الجهاز نهائياً. خذ نسخة احتياطية قبل ذلك.</p>
         <div class="actions">${btn('reset', 'trash', 'مسح جميع البيانات', { tone: 'danger' })}</div>
-      </section>`,
+      </section>
+      <p class="app-version">مستودع السرية · الإصدار ${version}</p>`,
   };
 }
 
