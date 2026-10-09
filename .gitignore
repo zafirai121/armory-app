@@ -1,3 +1,11 @@
+node_modules
+dist
+*.log
+.DS_Store
+.idea
+.vscode/*
+
+# Android (from the repository template)
 # Gradle files
 .gradle/
 build/
@@ -7,7 +15,6 @@ build/
 local.properties
 
 # Log/OS Files
-*.log
 
 # Android Studio generated files and folders
 captures/
