@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>مستودع السرية</title>
+    <meta name="description" content="إدارة مستودع السرية: الأسلحة والأعتدة والمنتسبين وسجل الحركات وسندات الذمة" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#0f1311" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f3f2ec" media="(prefers-color-scheme: light)" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="المستودع" />
+    <link rel="icon" type="image/svg+xml" href="icon.svg" />
+    <link rel="apple-touch-icon" href="icon-180.png" />
+    <script type="module" crossorigin src="./assets/index-BHNAmnql.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BA0bqvZL.css">
+  </head>
+  <body>
+    <div id="lock-screen" class="lock-screen" hidden>
+      <form class="lock-box" autocomplete="off">
+        <span class="lock-mark"><i class="ic" data-icon="lock"></i></span>
+        <h1>التطبيق مقفل</h1>
+        <p>اكتب الرمز لفتح مستودع السرية</p>
+        <input class="input lock-input" type="password" inputmode="numeric" aria-label="الرمز" />
+        <p class="lock-error" role="alert" hidden>الرمز غير صحيح</p>
+        <button type="submit" class="btn primary">فتح</button>
+      </form>
+    </div>
+
+    <div class="app">
+      <nav class="nav" aria-label="التنقل الرئيسي">
+        <div class="nav-brand">
+          <span class="brand-mark"><i class="ic" data-icon="shield"></i></span>
+          <span><b id="brand-unit">مستودع السرية</b><small>الأسلحة والأعتدة</small></span>
+        </div>
+        <a href="#/home" data-nav="home"><i class="ic" data-icon="home"></i><span>الرئيسية</span></a>
+        <a href="#/weapons" data-nav="weapons"><i class="ic" data-icon="weapon"></i><span>الأسلحة</span></a>
+        <a href="#/ammo" data-nav="ammo"><i class="ic" data-icon="ammo"></i><span>الأعتدة</span></a>
+        <a href="#/people" data-nav="people"><i class="ic" data-icon="people"></i><span>المنتسبون</span></a>
+        <a href="#/log" data-nav="log"><i class="ic" data-icon="log"></i><span>السجل</span></a>
+        <a href="#/settings" data-nav="settings" class="nav-settings"><i class="ic" data-icon="settings"></i><span>الإعدادات</span></a>
+      </nav>
+
+      <div class="main">
+        <header class="topbar">
+          <button type="button" class="icon-btn" id="back-btn" aria-label="رجوع" hidden><i class="ic" data-icon="back"></i></button>
+          <h1 id="page-title" class="page-title">مستودع السرية</h1>
+          <button type="button" class="icon-btn" id="lock-btn" data-action="lock-now" aria-label="قفل التطبيق الآن" hidden><i class="ic" data-icon="lock"></i></button>
+          <a href="#/settings" class="icon-btn topbar-settings" aria-label="الإعدادات"><i class="ic" data-icon="settings"></i></a>
+        </header>
+        <main id="view" class="view"></main>
+      </div>
+    </div>
+
+    <dialog id="sheet" class="sheet-dialog" aria-label="نموذج"></dialog>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <div id="print-area" class="print-area"></div>
+
+  </body>
+</html>
